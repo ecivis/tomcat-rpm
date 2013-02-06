@@ -89,7 +89,7 @@ echo %_tmppath $buildroot/tmp >> ~/.rpmmacros
 
 echo "download source file" >&2
 
-wget -q -o /dev/null  http://tweedo.com/mirror/apache/tomcat/tomcat-7/v$VERSION/bin/apache-tomcat-$VERSION.tar.gz
+wget -q -o /dev/null  http://www.apache.org/dist/tomcat/tomcat-$MAJOR_VERSION/v$VERSION/bin/apache-tomcat-$VERSION.tar.gz
 if [  ! -f "./apache-tomcat-$VERSION.tar.gz"  ]; then
 	echo "download failed" >&2
 	cleanup_rpmmacros

@@ -65,6 +65,26 @@ BuildArch: noarch
 The host-management web application of Apache Tomcat.
 
 
+%package docs
+Summary: The docs web application of Apache Tomcat.
+Group: System Environment/Applications
+Requires: %{name} = %{version}-%{release}
+BuildArch: noarch
+
+%description docs
+The docs web application of Apache Tomcat.
+
+
+%package examples
+Summary: The examples web application of Apache Tomcat.
+Group: System Environment/Applications
+Requires: %{name} = %{version}-%{release}
+BuildArch: noarch
+
+%description examples
+The examples web application of Apache Tomcat.
+
+
 %prep
 %setup -q -b 0 -T
 
@@ -113,7 +133,7 @@ popd
 %{__cp} -a bin/*.sh %{buildroot}%{bindir}
 %{__cp} -a conf/*.{policy,properties,xml} %{buildroot}%{confdir}
 %{__cp} -a lib/*.jar %{buildroot}%{libdir}
-%{__cp} -a webapps/{ROOT,manager,host-manager} %{buildroot}%{appdir}
+%{__cp} -a webapps/{ROOT,manager,host-manager,docs,examples} %{buildroot}%{appdir}
 
 
 %clean
@@ -178,7 +198,19 @@ fi
 %{appdir}/host-manager
 
 
+%files docs
+%defattr(0644 root root 0755)
+%{appdir}/docs
+
+
+%files examples
+%defattr(0644 root root 0755)
+%{appdir}/examples
+
+
 %changelog
+* Wed Feb 06 2013 Oskar Holowaty <me@oskarholowaty.com - latest tomcat major 7 version
+- include packages for example and docs
 * Fri Nov 30 2012 Joseph Lamoree <jlamoree@ecivis.com> - 7.0.33-1%{?dist}
 - First packaging of Apache Tomcat for eCivis apps
 - TODO Tomcat native connector

@@ -81,10 +81,8 @@ if [  -f ~/.rpmmacros  ]; then
 fi
 echo %_topdir $buildroot/ > ~/.rpmmacros
 echo %_tmppath $buildroot/tmp >> ~/.rpmmacros
-
-#echo '%_signature gpg' >> ~/.rpmmacros
-#echo '%_gpg_name Django' >> ~/.rpmmacros
-
+echo %_signature gpg >> ~/.rpmmacros
+echo "%_gpg_name Oskar Holowaty <repo@oskarholowaty.com>"  >> ~/.rpmmacros
 
 
 echo "download source file" >&2
@@ -107,8 +105,8 @@ cat "$SPEC_FILENAME"  | sed "s/%define minor_version $OLD_MINOR_VERSION/%define 
 mv -f  $SPEC_FILENAME.tmp $SPEC_FILENAME
 cp -f $SPEC_FILENAME $buildroot/SOURCES/
 
-rpmbuild -ba $SPEC_FILENAME
-#rpmbuild -ba --sign $SPEC_FILENAME
+#rpmbuild -ba $SPEC_FILENAME
+rpmbuild -ba --sign $SPEC_FILENAME
 
 ERR=$?
 checkError

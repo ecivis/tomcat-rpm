@@ -1,6 +1,6 @@
 %define major_version 7
 %define minor_version 0
-%define micro_version 33
+%define micro_version 47
 %define appname tomcat
 %define distname %{name}-%{version}
 

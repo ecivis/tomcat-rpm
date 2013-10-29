@@ -26,6 +26,10 @@ fi
 
 export CATALINA_HOME CATALINA_BASE CATALINA_OUT CATALINA_PID CATALINA_OPTS JAVA_HOME
 
+if [ "${JAVA_OPTS}" != "" ]; then
+  export JAVA_OPTS
+fi
+
 case "$1" in
   start)
         echo -n "Starting ${APPNAME}: "

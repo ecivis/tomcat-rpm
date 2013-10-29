@@ -3,3 +3,9 @@
 # Use this to specifify alternate options for
 # catalina.sh
 CATALINA_OPTS="-Xmx512m -Djava.awt.headless=true"
+
+# You may also set JAVA_OPTS if your situation
+# requires it.
+# See http://stackoverflow.com/questions/11222365/catalina-opts-vs-java-opts-what-is-the-difference
+# for more information
+#JAVA_OPTS=""

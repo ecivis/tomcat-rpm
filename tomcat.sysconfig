@@ -1,1 +1,5 @@
 # Tomcat config file
+#
+# Use this to specifify alternate options for
+# catalina.sh
+CATALINA_OPTS="-Xmx512m -Djava.awt.headless=true"

@@ -37,6 +37,8 @@ Source3: tomcat.logrotate.sh
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildArch: noarch
 
+Requires: java-sdk
+
 
 %description
 Tomcat is the servlet container that is used in the official Reference

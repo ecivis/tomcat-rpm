@@ -18,6 +18,11 @@ cp ${SOURCE1} ${SOURCE2} ${SOURCE3} rpmbuild/SOURCES/
 
 echo "Downloading sources ..."
 cd rpmbuild/SOURCES
+if [ -f apache-tomcat-${VERSION}.tar.gz ]; then
+  # We'll remove it just to be sure we have a good
+  # package to start with.
+  rm apache-tomcat-${VERSION}.tar.gz
+fi
 wget ${SOURCE_URL}
 
 echo "Building RPM ..."

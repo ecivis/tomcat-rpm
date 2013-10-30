@@ -216,6 +216,7 @@ fi
 %changelog
 * Wed Oct 30 2013 James Sumners <james.sumners@gmail.com> - 7.0.47%{?dist}
 Added Tomcat Native
+Added JSVC
 * Fri Nov 30 2012 Joseph Lamoree <jlamoree@ecivis.com> - 7.0.33-1%{?dist}
 - First packaging of Apache Tomcat for eCivis apps
 - TODO Tomcat native connector

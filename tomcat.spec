@@ -29,16 +29,23 @@ Summary: Open source software implementation of the Java Servlet and JavaServer 
 Group: Networking/Daemons
 License: ASL 2.0
 URL: http://tomcat.apache.org
-Packager: Joseph Lamoree <jlamoree@ecivis.com>
 Source0: http://www.apache.org/dist/tomcat/tomcat-%{major_version}/v%{version}/bin/%{name}-%{version}.tar.gz
 Source1: tomcat.sysconfig
 Source2: tomcat.init.sh
 Source3: tomcat.logrotate.sh
+Source4: tomcat-native.tar.gz
+Source5: setenv.sh
+#Source6: commons-daemon-native.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
-BuildArch: noarch
+BuildArch: x86_64
 
-Requires: java-sdk
+Requires: java-sdk >= 1:1.7
+Requires: apr >= 0:1.1.29
 
+BuildRequires: java-sdk >= 1:1.7
+BuildRequires: apr-devel >= 0:1.1.29
+BuildRequires: openssl-devel >= 0:0.9.7
+BuildRequires: autoconf, libtool, doxygen
 
 %description
 Tomcat is the servlet container that is used in the official Reference
@@ -69,10 +76,17 @@ The host-management web application of Apache Tomcat.
 
 %prep
 %setup -q -b 0 -T
+%setup -q -b 4 -T -n tcnative
 
+# Without this, RPM likes to think the main source
+# directory is the previously unpacked tarball.
+# That's not true and it makes the %files section bomb.
+%setup -q -b 0 -T
 
 %build
-
+cd %{_topdir}/BUILD/tcnative/jni/native
+./configure --with-apr=/usr/bin/apr-1-config --with-ssl=yes --with-java-home=/usr/lib/jvm/java
+make
 
 %install
 rm -rf %{buildroot}
@@ -111,12 +125,17 @@ popd
 %{__install} -m 0755 %{SOURCE2} %{buildroot}%{_initrddir}/%{appname}
 %{__install} -m 0644 %{SOURCE3} %{buildroot}%{_sysconfdir}/logrotate.d/%{appname}
 
-%{__cp} -a bin/*.{jar,xml} %{buildroot}%{bindir}
-%{__cp} -a bin/*.sh %{buildroot}%{bindir}
-%{__cp} -a conf/*.{policy,properties,xml} %{buildroot}%{confdir}
-%{__cp} -a lib/*.jar %{buildroot}%{libdir}
-%{__cp} -a webapps/{ROOT,manager,host-manager} %{buildroot}%{appdir}
+# Copy Tomcat files to package root
+%{__cp} -a %{_builddir}/%{name}-%{version}/bin/*.{jar,xml} %{buildroot}%{bindir}
+%{__cp} -a %{_builddir}/%{name}-%{version}/bin/*.sh %{buildroot}%{bindir}
+%{__cp} -a %{_builddir}/%{name}-%{version}/conf/*.{policy,properties,xml} %{buildroot}%{confdir}
+%{__cp} -a %{_builddir}/%{name}-%{version}/lib/*.jar %{buildroot}%{libdir}
+%{__cp} -a %{_builddir}/%{name}-%{version}/webapps/{ROOT,manager,host-manager} %{buildroot}%{appdir}
 
+# Copy Tomcat Native files to package root
+%{__install} -m 0755 %{SOURCE5} %{buildroot}%{bindir}
+cd %{_topdir}/BUILD/tcnative/jni/native
+make install DESTDIR=%{buildroot}
 
 %clean
 %{__rm} -rf %{buildroot}
@@ -128,6 +147,7 @@ popd
 
 
 %post
+/usr/bin/libtool --finish /usr/local/apr/lib
 /sbin/chkconfig --add %{appname}
 
 
@@ -137,12 +157,13 @@ if [ "$1" = "0" ]; then
   %{_initrddir}/%{appname} stop >/dev/null 2>&1
   /sbin/chkconfig --del %{appname}
 fi
+/sbin/ldconfig
 
 
 # RPM 4.8 has a bug in defattr() with dir mode
 %files
 #%defattr(0644 root root 0755)
-%doc ./{LICENSE,NOTICE,RELEASE*}
+%doc LICENSE NOTICE RELEASE-NOTES
 %attr(0775 root tomcat) %dir %{logdir}
 %attr(0775 tomcat tomcat) %dir %{piddir}
 %attr(0755 root root) %{_initrddir}/%{appname}
@@ -169,6 +190,8 @@ fi
 %attr(0775 root tomcat) %dir %{workdir}
 %attr(- root root) %{homedir}
 
+# Tomcat native files
+%attr(0755 root root) /usr/local/apr/
 
 %files manager
 %defattr(0644 root root 0755)
@@ -181,6 +204,8 @@ fi
 
 
 %changelog
+* Wed Oct 30 2013 James Sumners <james.sumners@gmail.com> - 7.0.47%{?dist}
+Added Tomcat Native
 * Fri Nov 30 2012 Joseph Lamoree <jlamoree@ecivis.com> - 7.0.33-1%{?dist}
 - First packaging of Apache Tomcat for eCivis apps
 - TODO Tomcat native connector

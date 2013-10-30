@@ -40,6 +40,13 @@ mv ${A:2} tcnative
 tar cf - tcnative | gzip -- - > tomcat-native.tar.gz
 rm -rf tcnative
 
+tar zxf commons-daemon-native.tar.gz
+rm commong-daemon-native.tar.gz
+B=$(find -O1 . -type d -name 'commons-daemon*')
+mv ${B:2} commons-daemon
+tar cf - commons-daemon | gzip -- - > commons-daemon-native.tar.gz
+rm -rf commons-daemon
+
 echo "Building RPM ..."
 cd ${CWD}
 rpmbuild --define "_topdir ${CWD}/rpmbuild" -ba tomcat.spec

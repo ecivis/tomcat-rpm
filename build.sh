@@ -35,14 +35,14 @@ rm -rf apache-tomcat-${VERSION}
 
 tar zxf tomcat-native.tar.gz
 rm tomcat-native.tar.gz
-A=$(find -O1 . -type d -name 'tomcat-native*')
+A=$(find . -maxdepth 1 -type d -name 'tomcat-native*')
 mv ${A:2} tcnative
 tar cf - tcnative | gzip -- - > tomcat-native.tar.gz
 rm -rf tcnative
 
 tar zxf commons-daemon-native.tar.gz
 rm commong-daemon-native.tar.gz
-B=$(find -O1 . -type d -name 'commons-daemon*')
+B=$(find . -maxdepth 1 -type d -name 'commons-daemon*')
 mv ${B:2} commons-daemon
 tar cf - commons-daemon | gzip -- - > commons-daemon-native.tar.gz
 rm -rf commons-daemon

@@ -39,11 +39,11 @@ Source6: commons-daemon-native.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildArch: x86_64
 
-Requires: jdk >= 1:1.7
+Requires: java-sdk >= 1:1.7
 Requires: apr >= 0:1.1.29
 Requires: libcap
 
-BuildRequires: jdk >= 1:1.7
+BuildRequires: java-sdk >= 1:1.7
 BuildRequires: apr-devel >= 0:1.1.29
 BuildRequires: openssl-devel >= 0:0.9.7
 BuildRequires: autoconf, libtool, doxygen
@@ -88,11 +88,11 @@ The host-management web application of Apache Tomcat.
 
 %build
 cd %{_topdir}/BUILD/tcnative/jni/native
-./configure --with-apr=/usr/bin/apr-1-config --with-ssl=yes --with-java-home=/usr/java/latest
+./configure --with-apr=/usr/bin/apr-1-config --with-ssl=yes --with-java-home=/usr/lib/jvm/java
 make
 
 cd %{_topdir}/BUILD/commons-daemon/unix
-./configure --with-java=/usr/java/latest
+./configure --with-java=/usr/lib/jvm/java
 make
 
 %install

@@ -39,11 +39,11 @@ Source6: commons-daemon-native.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildArch: x86_64
 
-Requires: java-sdk >= 1:1.7
+Requires: jdk >= 1:1.7
 Requires: apr >= 0:1.1.29
 Requires: libcap
 
-BuildRequires: java-sdk >= 1:1.7
+BuildRequires: jdk >= 1:1.7
 BuildRequires: apr-devel >= 0:1.1.29
 BuildRequires: openssl-devel >= 0:0.9.7
 BuildRequires: autoconf, libtool, doxygen
@@ -88,11 +88,11 @@ The host-management web application of Apache Tomcat.
 
 %build
 cd %{_topdir}/BUILD/tcnative/jni/native
-./configure --with-apr=/usr/bin/apr-1-config --with-ssl=yes --with-java-home=/usr/lib/jvm/java
+./configure --with-apr=/usr/bin/apr-1-config --with-ssl=yes --with-java-home=/usr/java/latest
 make
 
 cd %{_topdir}/BUILD/commons-daemon/unix
-./configure --with-java=/usr/lib/jvm/java
+./configure --with-java=/usr/java/latest
 make
 
 %install
@@ -215,8 +215,8 @@ fi
 
 %changelog
 * Wed Oct 30 2013 James Sumners <james.sumners@gmail.com> - 7.0.47%{?dist}
-Added Tomcat Native
-Added JSVC
+- Added Tomcat Native
+- Added JSVC
 * Fri Nov 30 2012 Joseph Lamoree <jlamoree@ecivis.com> - 7.0.33-1%{?dist}
 - First packaging of Apache Tomcat for eCivis apps
 - TODO Tomcat native connector

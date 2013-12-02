@@ -13,11 +13,24 @@ SOURCE2=$(awk '/Source2: / {print $2}' ${SPEC})
 SOURCE3=$(awk '/Source3: / {print $2}' ${SPEC})
 SOURCE5=$(awk '/Source5: / {print $2}' ${SPEC}) # setenv.sh
 
+which wget > /dev/null
+if [ $? -ne 0 ]; then
+  echo "Aborting. Cannot continue without wget."
+  exit 1
+fi
+
+which rpmbuild > /dev/null
+if [ $? -ne 0 ]; then
+  echo "Aborting. Cannot continue without rpmbuild from the rpm-build package."
+  exit 1
+fi
+
+echo "Creating RPM build path structure..."
 mkdir -p rpmbuild/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS,tmp}
 
 cp ${SOURCE1} ${SOURCE2} ${SOURCE3} ${SOURCE5} rpmbuild/SOURCES/
 
-echo "Downloading sources ..."
+echo "Downloading sources..."
 cd rpmbuild/SOURCES
 if [ -f apache-tomcat-${VERSION}.tar.gz ]; then
   # We'll remove it just to be sure we have a good
@@ -41,12 +54,13 @@ tar cf - tcnative | gzip -- - > tomcat-native.tar.gz
 rm -rf tcnative
 
 tar zxf commons-daemon-native.tar.gz
-rm commong-daemon-native.tar.gz
+rm commons-daemon-native.tar.gz
 B=$(find . -maxdepth 1 -type d -name 'commons-daemon*')
 mv ${B:2} commons-daemon
 tar cf - commons-daemon | gzip -- - > commons-daemon-native.tar.gz
 rm -rf commons-daemon
 
-echo "Building RPM ..."
+echo "Building RPM..."
 cd ${CWD}
 rpmbuild --define "_topdir ${CWD}/rpmbuild" -ba tomcat.spec
+

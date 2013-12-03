@@ -23,7 +23,7 @@
 
 Name: apache-tomcat
 Version: %{major_version}.%{minor_version}.%{micro_version}
-Release: 1%{?dist}
+Release: 2%{?dist}
 Epoch: 0
 Summary: Open source software implementation of the Java Servlet and JavaServer Pages technologies.
 Group: Networking/Daemons
@@ -41,6 +41,7 @@ BuildArch: x86_64
 
 Requires: java-sdk >= 1:1.7
 Requires: apr >= 0:1.1.29
+Requires: libtool
 Requires: libcap
 
 BuildRequires: java-sdk >= 1:1.7
@@ -214,6 +215,8 @@ fi
 
 
 %changelog
+* Tue Dec 03 2013 James Sumners <james.sumners@gmail.com> - 7.0.47%{?dist}
+- Added requires line for libtool to the base apache-tomcat package
 * Wed Oct 30 2013 James Sumners <james.sumners@gmail.com> - 7.0.47%{?dist}
 - Added Tomcat Native
 - Added JSVC

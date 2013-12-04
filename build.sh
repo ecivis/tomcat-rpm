@@ -1,6 +1,7 @@
 #!/bin/bash
 CWD=$(pwd)
 SPEC="tomcat.spec"
+TCINIT="tomcat.init.sh"
 
 MAJOR_VERSION=$(awk '/%define major_version/ {print $3}' ${SPEC})
 MINOR_VERSION=$(awk '/%define minor_version/ {print $3}' ${SPEC})
@@ -24,6 +25,24 @@ if [ $? -ne 0 ]; then
   echo "Aborting. Cannot continue without rpmbuild from the rpm-build package."
   exit 1
 fi
+
+# The community packages install to /usr/java/...
+# but the RedHat packages install to /usr/lib/jvm/...
+echo "Determinig JAVA_HOME..."
+if [ -a /usr/lib/jvm/java ]; then
+  JHOME="/usr/lib/jvm/java"
+  JDKREQ="java-sdk"
+elif [ -a /usr/java/latest ]; then
+  JHOME="/usr/java/latest"
+  JDKREQ="jdk"
+else
+  echo "Couldn't locate a standard Java install. Aborting!"
+  exit 1
+fi
+
+echo "Updating init script with real JAVA_HOME..."
+JHOME_ESCAPED=$(echo "${JHOME}" | sed -e 's/[\/&]/\\&/g')
+sed -i 's/^\(JAVA_HOME=\)\(.*\)$/\1"'${JHOME_ESCAPED}'"/' ${TCINIT}
 
 echo "Creating RPM build path structure..."
 mkdir -p rpmbuild/{BUILD,BUILDROOT,RPMS,SOURCES,SPECS,SRPMS,tmp}
@@ -62,5 +81,6 @@ rm -rf commons-daemon
 
 echo "Building RPM..."
 cd ${CWD}
-rpmbuild --define "_topdir ${CWD}/rpmbuild" -ba tomcat.spec
+rpmbuild --define "_topdir ${CWD}/rpmbuild" --define "_java_home ${JHOME}" \
+  --define "_jdk_require ${JDKREQ}" -ba ${SPEC}
 

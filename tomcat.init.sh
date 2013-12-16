@@ -17,7 +17,7 @@ CATALINA_BASE="/var/lib/$APPNAME"
 CATALINA_OUT="/var/log/$APPNAME/catalina.out"
 CATALINA_PID="/var/run/${APPNAME}/tomcat.pid"
 CATALINA_OPTS="-Xmx512m -Djava.awt.headless=true"
-JAVA_HOME="/usr/java/latest"
+JAVA_HOME="/usr/lib/jvm/java"
 
 
 JSVC_PID="/var/run/${APPNAME}/jsvc.pid"

@@ -23,7 +23,7 @@
 
 Name: apache-tomcat
 Version: %{major_version}.%{minor_version}.%{micro_version}
-Release: 1%{?dist}
+Release: 2%{?dist}
 Epoch: 0
 Summary: Open source software implementation of the Java Servlet and JavaServer Pages technologies.
 Group: Networking/Daemons
@@ -39,11 +39,13 @@ Source6: commons-daemon-native.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildArch: x86_64
 
-Requires: jdk >= 1:1.7
+# The _jdk_require is passed via `rpmbuild --define "_jdk_require ..."`
+Requires: %{_jdk_require} >= 1:1.7
 Requires: apr >= 0:1.1.29
+Requires: libtool
 Requires: libcap
 
-BuildRequires: jdk >= 1:1.7
+BuildRequires: %{_jdk_require} >= 1:1.7
 BuildRequires: apr-devel >= 0:1.1.29
 BuildRequires: openssl-devel >= 0:0.9.7
 BuildRequires: autoconf, libtool, doxygen
@@ -86,13 +88,14 @@ The host-management web application of Apache Tomcat.
 # That's not true and it makes the %files section bomb.
 %setup -q -b 0 -T
 
+# The _java_home is passed via `rpmbuild --define "_java_home ..."`
 %build
 cd %{_topdir}/BUILD/tcnative/jni/native
-./configure --with-apr=/usr/bin/apr-1-config --with-ssl=yes --with-java-home=/usr/java/latest
+./configure --with-apr=/usr/bin/apr-1-config --with-ssl=yes --with-java-home=%{_java_home}
 make
 
 cd %{_topdir}/BUILD/commons-daemon/unix
-./configure --with-java=/usr/java/latest
+./configure --with-java=%{_java_home}
 make
 
 %install
@@ -214,6 +217,9 @@ fi
 
 
 %changelog
+* Wed Dec 04 2013 James Sumners <james.sumners@gmail.com> - 7.0.47%{?dist}
+- Updated to use predefined variables for the Java home and JDK virtual package
+- Added requires line for libtool to the base apache-tomcat package
 * Wed Oct 30 2013 James Sumners <james.sumners@gmail.com> - 7.0.47%{?dist}
 - Added Tomcat Native
 - Added JSVC

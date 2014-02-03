@@ -1,6 +1,6 @@
 %define major_version 7
 %define minor_version 0
-%define micro_version 47
+%define micro_version 50
 %define appname tomcat
 %define distname %{name}-%{version}
 
@@ -217,6 +217,8 @@ fi
 
 
 %changelog
+* Mon Feb 03 2014 James Sumners <james.sumners@gmail.com> - 7.0.50%{?dist}
+- Updated Tomcat version to 7.0.50
 * Wed Dec 04 2013 James Sumners <james.sumners@gmail.com> - 7.0.47%{?dist}
 - Updated to use predefined variables for the Java home and JDK virtual package
 - Added requires line for libtool to the base apache-tomcat package

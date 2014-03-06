@@ -1,6 +1,6 @@
 %define major_version 7
 %define minor_version 0
-%define micro_version 47
+%define micro_version 52
 %define appname tomcat
 %define distname %{name}-%{version}
 
@@ -23,7 +23,7 @@
 
 Name: apache-tomcat
 Version: %{major_version}.%{minor_version}.%{micro_version}
-Release: 2%{?dist}
+Release: 4%{?dist}
 Epoch: 0
 Summary: Open source software implementation of the Java Servlet and JavaServer Pages technologies.
 Group: Networking/Daemons
@@ -217,6 +217,10 @@ fi
 
 
 %changelog
+* Wed Feb 19 2014 James Sumners <james.sumners@gmail.com> - 7.0.52%{?dist}
+- Updated Tomcat version to 7.0.52 (fixes CVE-2014-0050)
+* Mon Feb 03 2014 James Sumners <james.sumners@gmail.com> - 7.0.50%{?dist}
+- Updated Tomcat version to 7.0.50
 * Wed Dec 04 2013 James Sumners <james.sumners@gmail.com> - 7.0.47%{?dist}
 - Updated to use predefined variables for the Java home and JDK virtual package
 - Added requires line for libtool to the base apache-tomcat package

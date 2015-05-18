@@ -79,8 +79,26 @@ mv ${B:2} commons-daemon
 tar cf - commons-daemon | gzip -- - > commons-daemon-native.tar.gz
 rm -rf commons-daemon
 
-echo "Building RPM..."
-cd ${CWD}
-rpmbuild --define "_topdir ${CWD}/rpmbuild" --define "_java_home ${JHOME}" \
-  --define "_jdk_require ${JDKREQ}" -ba ${SPEC}
+if [ -f ${CWD}/gpg-env ]; then
+  echo "Building RPM with GPG signing..."
+  cd ${CWD}
+
+  source gpg-env
+  if [ "${gpg_bin}" != "" ]; then
+    rpmbuild --define "_topdir ${CWD}/rpmbuild" --define "_java_home ${JHOME}" \
+      --define "_jdk_require ${JDKREQ}" --define "_signature ${signature}" \
+      --define "_gpg_path ${gpg_path}" --define "_gpg_name ${gpg_name}" \
+      --define "__gpg ${gpg_bin}" --sign -ba ${SPEC}
+  else
+    rpmbuild --define "_topdir ${CWD}/rpmbuild" --define "_java_home ${JHOME}" \
+      --define "_jdk_require ${JDKREQ}" --define "_signature ${signature}" \
+      --define "_gpg_path ${gpg_path}" --define "_gpg_name ${gpg_name}" \
+      --sign --ba ${SPEC}
+  fi
+else
+  echo "Building RPM..."
+  cd ${CWD}
+  rpmbuild --define "_topdir ${CWD}/rpmbuild" --define "_java_home ${JHOME}" \
+    --define "_jdk_require ${JDKREQ}" -ba ${SPEC}
+fi
 

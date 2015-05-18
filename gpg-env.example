@@ -1,0 +1,15 @@
+# Copy this file to 'gpg-env' and adjust the variable therein
+# to enable automatic GPG signing of the generate RPM.
+
+# Corresponds to RPM's `%_signature` macro
+signature='gpg'
+
+# Corresponds to RPM's `%_gpg_name` macro
+gpg_name='Foo User'
+
+# Corresponds to RPM's `%_gpg_path` macro
+gpg_path='~/.gnupg'
+
+# Corresponds to RPM's `%__gpg` macro
+# Uncomment if really needed. Otherwise it will not be set
+#gpg_bin='/usr/bin/gpg'

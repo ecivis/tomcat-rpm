@@ -1,6 +1,6 @@
 %define major_version 8
 %define minor_version 0
-%define micro_version 18
+%define micro_version 22
 %define appname tomcat
 %define distname %{name}-%{version}
 
@@ -217,6 +217,8 @@ fi
 
 
 %changelog
+* Mon May 18 2015 James Sumners <james.sumners@gmail.com> - 8.0.22%{?dist}
+- Updated Tomcat to version 8.0.22
 * Tue Feb 03 2015 James Sumners <james.sumners@gmail.com> - 8.0.18%{?dist}
 - Updated Tomcat to version 8.0.18
 * Fri Dec 19 2014 James Sumners <james.sumners@gmail.com> - 8.0.15%{?dist}

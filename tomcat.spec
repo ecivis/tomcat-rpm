@@ -1,6 +1,6 @@
-%define major_version 7
+%define major_version 8
 %define minor_version 0
-%define micro_version 52
+%define micro_version 22
 %define appname tomcat
 %define distname %{name}-%{version}
 
@@ -45,7 +45,7 @@ Requires: apr >= 0:1.1.29
 Requires: libtool
 Requires: libcap
 
-BuildRequires: %{_jdk_require} >= 1:1.7
+BuildRequires: %{_jdk_require} >= 1:1.8
 BuildRequires: apr-devel >= 0:1.1.29
 BuildRequires: openssl-devel >= 0:0.9.7
 BuildRequires: autoconf, libtool, doxygen
@@ -217,6 +217,12 @@ fi
 
 
 %changelog
+* Mon May 18 2015 James Sumners <james.sumners@gmail.com> - 8.0.22%{?dist}
+- Updated Tomcat to version 8.0.22
+* Tue Feb 03 2015 James Sumners <james.sumners@gmail.com> - 8.0.18%{?dist}
+- Updated Tomcat to version 8.0.18
+* Fri Dec 19 2014 James Sumners <james.sumners@gmail.com> - 8.0.15%{?dist}
+- Updated Tomcat to version 8.0.15
 * Wed Feb 19 2014 James Sumners <james.sumners@gmail.com> - 7.0.52%{?dist}
 - Updated Tomcat version to 7.0.52 (fixes CVE-2014-0050)
 * Mon Feb 03 2014 James Sumners <james.sumners@gmail.com> - 7.0.50%{?dist}
